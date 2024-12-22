@@ -32,6 +32,7 @@ namespace BLL.Services
             {
                 throw new Exception($"{nameof(dto.Username)} alredy exists");
             }
+            
 
             var user = _mapper.Map<User>(dto);
 
