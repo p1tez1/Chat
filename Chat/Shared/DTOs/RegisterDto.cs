@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chat.Shared.DTOs
 {
-    public class UserDTO
+    public class RegisterDto
     {
         [Required, MaxLength(25)]
         public string Name { get; set; }

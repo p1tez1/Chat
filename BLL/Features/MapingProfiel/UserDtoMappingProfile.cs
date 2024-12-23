@@ -13,7 +13,7 @@ namespace BLL.Features.MapingProfiel
     {
         public UserDtoMappingProfile()
         {
-            CreateMap<UserDTO, User>()
+            CreateMap<RegisterDto, User>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password));         

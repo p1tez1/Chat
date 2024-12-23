@@ -22,7 +22,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<User> CreateUser(UserDTO dto, CancellationToken cancellationToken)
+        public async Task<User> Register(RegisterDto dto, CancellationToken cancellationToken)
         {
             var usernameExist = await _chatContext.Users.
                                         AsNoTracking().
@@ -41,6 +41,18 @@ namespace BLL.Services
 
             return user;
         }    
+
+        public async Task<User> Login(LoginDto dto, CancellationToken cancellationToken)
+        {
+            var user = await _chatContext.Users.FirstOrDefaultAsync(u => u.Username == dto.Username && u.Password == dto.Password, cancellationToken);
+            
+            if(user is null)
+            {
+                throw new Exception("Incorect credentials");
+            }
+
+            return user;
+        }
 
     }
 }

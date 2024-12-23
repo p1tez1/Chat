@@ -19,11 +19,18 @@ namespace Chat.Server.Controllers
             _acountServices = acountservices;      
             _heshing = heshing;
         }
-
-        public async Task<IActionResult> Register(UserDTO dto, CancellationToken cancellationToken)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDto dto, CancellationToken cancellationToken)
         {
-            dto.Password = _heshing.Hash(dto.Password);
-            var user = _acountServices.CreateUser(dto,cancellationToken);
+            var user = _acountServices.Register(dto,cancellationToken);
+
+            return Ok(user);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto, CancellationToken cancellationToken)
+        {
+            var user = _acountServices.Login(dto,cancellationToken);
 
             return Ok(user);
         }

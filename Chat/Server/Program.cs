@@ -1,6 +1,8 @@
 using BLL.Features.Heshing;
 using BLL.Features.MapingProfiel;
+using BLL.Services;
 using DAL.ChatDBContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,8 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-//Add heshing service
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters
+});
+
 builder.Services.AddScoped<IHeshing, Heshing>();
+builder.Services.AddScoped<IAcountServices, AcountServices>();
 
 //Add automapper
 builder.Services.AddAutoMapper(typeof(UserDtoMappingProfile));

@@ -5,6 +5,7 @@ namespace BLL.Services
 {
     public interface IAcountServices
     {
-        Task<User> CreateUser(UserDTO dto, CancellationToken cancellationToken);
+        Task<User> Register(RegisterDto dto, CancellationToken cancellationToken);
+        Task<User> Login(LoginDto dto, CancellationToken cancellationToken);
     }
 }
