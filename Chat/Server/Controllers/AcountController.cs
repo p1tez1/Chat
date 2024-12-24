@@ -1,4 +1,5 @@
 ﻿using BLL.Features.Heshing;
+using BLL.Features.Token;
 using BLL.Services;
 using Chat.Shared.DTOs;
 using DAL.Entities;
@@ -13,26 +14,35 @@ namespace Chat.Server.Controllers
     {
         private readonly IAcountServices _acountServices;
         private readonly IHeshing _heshing;
-       
-        public AcountController(IAcountServices acountservices, IHeshing heshing)
+        private readonly TokenService _tokenService;
+
+        public AcountController(IAcountServices acountservices, IHeshing heshing, TokenService tokenService)
         {
             _acountServices = acountservices;      
             _heshing = heshing;
+            _tokenService = tokenService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto, CancellationToken cancellationToken)
         {
-            var user = _acountServices.Register(dto,cancellationToken);
+            var user = await _acountServices.Register(dto,cancellationToken);
 
-            return Ok(user);
+            return Ok(GenerateToken(user));
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto, CancellationToken cancellationToken)
         {
-            var user = _acountServices.Login(dto,cancellationToken);
+            var user = await _acountServices.Login(dto,cancellationToken);
 
-            return Ok(user);
+            return Ok(GenerateToken(user));
+        }
+
+        private AuthResponseDto GenerateToken(User user)
+        {
+            var token = _tokenService.GenerateJWT(user);
+
+            return new AuthResponseDto(user.Name, token);
         }
     }
 }

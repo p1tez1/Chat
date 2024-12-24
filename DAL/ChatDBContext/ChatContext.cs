@@ -1,20 +1,30 @@
 ﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.ChatDBContext
+public class ChatContext : DbContext
 {
-    public class ChatContext : DbContext
+    public ChatContext(DbContextOptions<ChatContext> options)
+        : base(options)
     {
-        public ChatContext(DbContextOptions<ChatContext> options) : base(options)
-        {
-        }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Massage> Massages {  get; set; }
+    }
+
+    public DbSet<User> Users { get; set; }
+    public DbSet<Message> Messages { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Message>()
+            .HasOne(m => m.FromUser)
+            .WithMany()
+            .HasForeignKey(m => m.FromId)
+            .OnDelete(DeleteBehavior.Restrict); // Заміна каскадного видалення
+
+        modelBuilder.Entity<Message>()
+            .HasOne(m => m.ToUser)
+            .WithMany()
+            .HasForeignKey(m => m.ToId)
+            .OnDelete(DeleteBehavior.Restrict); // Заміна каскадного видалення
     }
 }

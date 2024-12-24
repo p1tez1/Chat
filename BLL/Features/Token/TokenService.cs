@@ -1,13 +1,9 @@
 ﻿using DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Features.Token
 {
@@ -31,16 +27,16 @@ namespace BLL.Features.Token
                 IssuerSigningKey = GetSecurityKey(configuration),
             };
 
-        public string GenerateJwt(IEnumerable<Claim> additionalClaims = null)
+        public string GenerateJWT(IEnumerable<Claim> additionalClaims = null)
         {
             var securityKey = GetSecurityKey(_configuration);
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var expireInMinutes = Convert.ToInt32(_configuration["Jwt:ExpireIMinutes"] ?? "60");
 
-            var claims = new List<Claim> { 
+            var claims = new List<Claim> {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-            if(additionalClaims?.Any() == true)
+            if (additionalClaims?.Any() == true)
                 claims.AddRange(additionalClaims);
 
             var token = new JwtSecurityToken(issuer: _configuration["Jwt:Issuer"],
@@ -49,10 +45,10 @@ namespace BLL.Features.Token
             expires: DateTime.Now.AddMinutes(expireInMinutes),
             signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token); 
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateJWT(User user, IEnumerable<Claim> additionalClaims = null)
+        public string GenerateJWT(User user, IEnumerable<Claim>? additionalClaims = null)
         {
             var claims = new List<Claim>
             {
@@ -68,5 +64,7 @@ namespace BLL.Features.Token
 
         private static SymmetricSecurityKey GetSecurityKey(IConfiguration _configuration) =>
             new(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+
+
     }
 }

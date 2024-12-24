@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace DAL.Entities
 {
     [Table("Message")]
-    public class Massage
+    public class Message
     {
         [Key]
         public Guid Id { get; set; }

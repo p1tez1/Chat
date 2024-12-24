@@ -1,7 +1,8 @@
 using BLL.Features.Heshing;
 using BLL.Features.MapingProfiel;
+using BLL.Features.Token;
 using BLL.Services;
-using DAL.ChatDBContext;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,10 @@ builder.Services.AddAuthentication(options =>
 
 }).AddJwtBearer(options =>
 {
-    options.TokenValidationParameters
+    options.TokenValidationParameters = TokenService.GetTokenValidationParameters(builder.Configuration);
 });
+
+builder.Services.AddTransient<TokenService>();
 
 builder.Services.AddScoped<IHeshing, Heshing>();
 builder.Services.AddScoped<IAcountServices, AcountServices>();
@@ -29,7 +32,8 @@ builder.Services.AddScoped<IAcountServices, AcountServices>();
 builder.Services.AddAutoMapper(typeof(UserDtoMappingProfile));
 
 //EF core builder
-builder.Services.AddDbContext<ChatContext>(options => options.UseSqlServer("Server=MAREK;Database=User;Trusted_Connection=True;TrustServerCertificate=true"));
+builder.Services.AddDbContext<ChatContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Chat")));
 
 
 var app = builder.Build();
