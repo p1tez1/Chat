@@ -25,17 +25,35 @@ namespace Chat.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto, CancellationToken cancellationToken)
         {
-            var user = await _acountServices.Register(dto,cancellationToken);
+            try
+            {
+                var user = await _acountServices.Register(dto, cancellationToken);
 
-            return Ok(GenerateToken(user));
+                return Ok(GenerateToken(user));
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(500, "This user allredy exist");
+            }
+
+            
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto, CancellationToken cancellationToken)
         {
-            var user = await _acountServices.Login(dto,cancellationToken);
-
-            return Ok(GenerateToken(user));
+            try
+            {
+                var user = await _acountServices.Login(dto, cancellationToken);
+               
+                return Ok(GenerateToken(user));
+            }
+            catch (Exception ex)            
+            {
+               
+                return StatusCode(500, "Incorect password or username");
+                
+            }
         }
 
         private AuthResponseDto GenerateToken(User user)

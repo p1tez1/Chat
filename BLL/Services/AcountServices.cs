@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
-using BLL.Features.Token;
 using Chat.Shared.DTOs;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -15,7 +9,7 @@ namespace BLL.Services
     {
         private readonly ChatContext _chatContext;
         private readonly IMapper _mapper;
-        
+
 
         public AcountServices(ChatContext chatContext, IMapper mapper)
         {
@@ -29,26 +23,26 @@ namespace BLL.Services
                                         AsNoTracking().
                                         AnyAsync(u => u.Username == dto.Username, cancellationToken);
 
-            if(!usernameExist)
+            if (usernameExist)
             {
                 throw new Exception($"{nameof(dto.Username)} alredy exists");
             }
-            
+
             var user = _mapper.Map<User>(dto);
 
             await _chatContext.Users.AddAsync(user, cancellationToken);
             await _chatContext.SaveChangesAsync(cancellationToken);
-                  
+
             return user;
-        }    
+        }
 
         public async Task<User> Login(LoginDto dto, CancellationToken cancellationToken)
         {
             var user = await _chatContext.Users.FirstOrDefaultAsync(u => u.Username == dto.Username && u.Password == dto.Password, cancellationToken);
-            
-            if(user is null)
+
+            if (user is null)
             {
-                throw new Exception("Incorect credentials");
+                throw new Exception("Incorect password or username");
             }
 
             return user;

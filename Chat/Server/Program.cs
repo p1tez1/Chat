@@ -2,7 +2,7 @@ using BLL.Features.Heshing;
 using BLL.Features.MapingProfiel;
 using BLL.Features.Token;
 using BLL.Services;
-
+using Chat.Server.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +24,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddTransient<TokenService>();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddScoped<IHeshing, Heshing>();
 builder.Services.AddScoped<IAcountServices, AcountServices>();
@@ -60,6 +62,7 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
 app.MapFallbackToFile("index.html");
 
 app.Run();
