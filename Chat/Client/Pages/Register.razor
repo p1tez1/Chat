@@ -2,6 +2,7 @@
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <PageTitle>Register - chat</PageTitle>
 
@@ -10,33 +11,33 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-                   <EditForm Model="RegisterModel" OnValidSubmit="LoginAsync">
-           
+            <EditForm Model="RegisterModel" OnValidSubmit="LoginAsync">
+
                 <div class="card text-center">
                     <div class="card-header">
                         <h2>Chat - Register</h2>
                     </div>
                     <div class="card-body">
-                <DataAnnotationsValidator />
-                @if (!string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    <p class="text-danger">@errorMessage</p>
-                }
-                <div class="mb-3">
-                    <label class="form-lable">Name</label>
-                    <InputText @bind-Value="RegisterModel.Name" DisplayName="Name" class="form-control" placeholder="Enter name" />
-                    <ValidationMessage For="() => RegisterModel.Name" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-lable">Username</label>
-                    <InputText @bind-Value="RegisterModel.Username" DisplayName="Username" class="form-control" placeholder="Enter Username" />
-                    <ValidationMessage For="() => RegisterModel.Username" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-lable">Password</label>
-                    <InputText type="password" @bind-Value="RegisterModel.Password" DisplayName="Password" class="form-control" placeholder="Enter password" />
-                    <ValidationMessage For="() => RegisterModel.Password" />
-                </div>
+                        <DataAnnotationsValidator />
+                        @if (!string.IsNullOrWhiteSpace(errorMessage))
+                        {
+                            <p class="text-danger">@errorMessage</p>
+                        }
+                        <div class="mb-3">
+                            <label class="form-lable">Name</label>
+                            <InputText @bind-Value="RegisterModel.Name" DisplayName="Name" class="form-control" placeholder="Enter name" />
+                            <ValidationMessage For="() => RegisterModel.Name" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-lable">Username</label>
+                            <InputText @bind-Value="RegisterModel.Username" DisplayName="Username" class="form-control" placeholder="Enter Username" />
+                            <ValidationMessage For="() => RegisterModel.Username" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-lable">Password</label>
+                            <InputText type="password" @bind-Value="RegisterModel.Password" DisplayName="Password" class="form-control" placeholder="Enter password" />
+                            <ValidationMessage For="() => RegisterModel.Password" />
+                        </div>
                     </div>
                     <div class="card-footer ">
                         <div class="mb-3">
