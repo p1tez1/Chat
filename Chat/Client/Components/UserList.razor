@@ -1,12 +1,21 @@
-﻿
+﻿@using UserDTO
+
 <ul class="list-group list-group-flush">
     @foreach(var user in Users)
     {
-        <li class="list-group-item">@user</li>
+        <li class="list-group-item" @onclick="() => HandleUserClik(user)">@user.Name</li>
     }  
 </ul>
 
 @code{
     [Parameter]
-    public IEnumerable<string> Users {get; set;} = Enumerable.Empty<string>();
+    public IEnumerable<UserDto> Users {get; set;} = Enumerable.Empty<UserDto>();
+
+    [Parameter]
+    public EventCallback<UserDto> OnUserSelected{ get; set; }
+
+    private async Task HandleUserClik(UserDto user)
+    {
+        OnUserSelected.InvokeAsync();
+    }
 }

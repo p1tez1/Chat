@@ -80,11 +80,12 @@
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var authResult = JsonConverter.Deserialize<AuthResponseDto>(content);
-                AuthenticationState.LoadState(authResult);
 
                 var serialized = JsonConverter.Serialize(authResult);
                 await JsRuntime.InvokeVoidAsync("window.setToStorage", AuthenticationState.AuthStoreKey, serialized);
-                NavigationManager.NavigateTo("/chat");
+                //NavigationManager.NavigateTo("/chat");
+                AuthenticationState.LoadState(authResult);
+                
             }
             else
             {

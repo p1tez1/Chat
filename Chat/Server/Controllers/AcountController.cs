@@ -5,6 +5,7 @@ using Chat.Shared.DTOs;
 using DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UserDTO;
 
 namespace Chat.Server.Controllers
 {
@@ -60,7 +61,7 @@ namespace Chat.Server.Controllers
         {
             var token = _tokenService.GenerateJWT(user);
 
-            return new AuthResponseDto(user.Name, token);
+            return new AuthResponseDto(new UserDto(user.Id, user.Name), token);
         }
     }
 }

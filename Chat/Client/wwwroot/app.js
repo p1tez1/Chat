@@ -1,8 +1,8 @@
 ﻿
-window.getFromStorage = (key) => {
-    return localStorage.getItem(key);
-}
+const storage = window.localStorage;
 
-window.setToStorage = (key, value) => {
-    localStorage.setItem(key, value);
-}
+window.getFromStorage = (key) => storage.getItem(key);
+
+window.setToStorage = (key, value) =>storage.setItem(key, value);
+
+window.removeFromStorage = (key) =>storage.removeItem(key);

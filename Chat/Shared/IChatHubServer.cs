@@ -1,8 +1,11 @@
-﻿namespace Chat.Shared
+﻿using Chat.Shared.DTOs;
+using UserDTO;
+
+namespace Chat.Shared
 {
 
     public interface IChatHubServer
     {
-        Task ConnectUser(string userName);
+        Task ConnectUser(UserDto user);
     }
 }

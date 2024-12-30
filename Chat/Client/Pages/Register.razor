@@ -85,12 +85,12 @@
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var authResult = JsonSerializer.Deserialize<AuthResponseDto>(content, new JsonSerializerOptions
-                    {
-                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                    });
+                var authResult = JsonConverter.Deserialize<AuthResponseDto>(content);
+
+                var serialized = JsonConverter.Serialize(authResult);
+                await JsRuntime.InvokeVoidAsync("window.setToStorage", AuthenticationState.AuthStoreKey, serialized);
+               // NavigationManager.NavigateTo("/chat");
                 AuthenticationState.LoadState(authResult);
-                NavigationManager.NavigateTo("/chat");
             }
             else
             {

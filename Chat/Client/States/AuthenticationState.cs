@@ -1,5 +1,6 @@
 ﻿using Chat.Shared.DTOs;
 using System.ComponentModel;
+using UserDTO;
 
 namespace Chat.Client.States
 {
@@ -8,7 +9,9 @@ namespace Chat.Client.States
         public const string AuthStoreKey = "authkey";
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public string? Name {  get; set; }
+        //public Guid Id { get; set; }
+        //public string? Name {  get; set; }
+        public UserDto User { get; set; } = default;
         public string? Token {  get; set; }
 
         private bool _isAuthenticated;
@@ -27,17 +30,20 @@ namespace Chat.Client.States
         }
         public void LoadState(AuthResponseDto authResponseDto)
         {
-            Name= authResponseDto.Name;
-            Token= authResponseDto.Token;
+            //Id = authResponseDto.User.Id;
+            //Name = authResponseDto.User.Name;
+            User = authResponseDto.User;
+            Token = authResponseDto.Token;
 
             IsAuthenticated = true;
         }
 
         public void UnLoadState()
         {
-            Name = null;
+            //Id = Guid.Empty;
+            //Name = null;
+            User = default;
             Token = null;
-
             IsAuthenticated = false;
         }
 

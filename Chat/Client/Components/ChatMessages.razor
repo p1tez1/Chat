@@ -1,5 +1,15 @@
-﻿<h3>ChatMessages</h3>
+﻿@using UserDTO
+
+@if(SelectedUser is null)
+{
+    <h2> Please select a user from connected users list, to starm a converstation </h2>
+}
+else
+{
+    <h2>@SelectedUser.Value.Name </h2>
+}
 
 @code {
-    
+    [Parameter]
+    public UserDto? SelectedUser{ get; set; }
 }

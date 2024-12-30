@@ -1,13 +1,13 @@
 ﻿using Chat.Shared;
+using Chat.Shared.DTOs;
 using Microsoft.AspNetCore.SignalR;
+using UserDTO;
 
 namespace Chat.Server.Hubs
 {
-
-    
     public class ChatHub : Hub<IChatHubClient>, IChatHubServer
     {
-        private static readonly ICollection<string> _connectedUsers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private static readonly IDictionary<Guid ,UserDto> _connectedUsers = new Dictionary<Guid, UserDto>();
         public ChatHub()
         {
             
@@ -18,15 +18,15 @@ namespace Chat.Server.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task ConnectUser(string userName)
+        public async Task ConnectUser(UserDto user)
         {
-            await Clients.Caller.ConnectedUsersList(_connectedUsers);
+            await Clients.Caller.ConnectedUsersList(_connectedUsers.Values);
 
-            if(!_connectedUsers.Contains(userName))
+            if(!_connectedUsers.ContainsKey(user.Id))
             {
-                _connectedUsers.Add(userName);
+                _connectedUsers.Add(user.Id, user);
 
-                await Clients.Others.UserConnected(userName);
+                await Clients.Others.UserConnected(user);
             }
         }
     }
